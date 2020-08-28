@@ -71,16 +71,15 @@
         // Set light intensity to a lower value (default is 1).
         light.intensity = 0.5;
 
-        // Add one of Babylon's built-in sphere shapes.
-        let sphere = BABYLON.MeshBuilder.CreateSphere('sphere-1', {
-          diameter: 2,
-          diameterY: 3,
-          diameterZ: 4,
-          segments: 32
+        // Add one of Babylon's built-in cylinder shapes.
+        let cylinder = BABYLON.MeshBuilder.CreateCylinder('cylinder-1', {
+          diameterTop: 2,
+          diameterBottom: 5,
+          tessellation: 32
         }, scene);
 
-        // Position the sphere up by half of its height.
-        sphere.position.y = 1;
+        // Position the cylinder up by half of its height.
+        cylinder.position.y = 1;
 
         // Create a default environment for the scene.
         scene.createDefaultEnvironment();

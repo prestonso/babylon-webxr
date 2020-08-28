@@ -13,6 +13,9 @@
     <!-- Embed pep.js for consistent cross-browser pointer events. -->
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 
+    <!-- Embed Babylon inspector for debugging. -->
+    <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
     <style>
       html, body {
         overflow: hidden;
@@ -90,6 +93,7 @@
           console.log('WebXR support is unavailable');
         } else {
           // XR support is available; proceed.
+          scene.debugLayer.show();
           return scene;
         }
 

@@ -1,0 +1,124 @@
+<!-- babylon-webxr/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Babylon WebXR Demo</title>
+    
+    <!-- Embed latest version of Babylon.js. -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+    <!-- Embed Babylon loader scripts for .gltf and other filetypes. -->
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+
+    <!-- Embed pep.js for consistent cross-browser pointer events. -->
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+
+    <style>
+      html, body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #render-canvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <canvas id="render-canvas"></canvas>
+
+    <!-- Our Babylon.js implementation. -->
+    <script>
+      // Identify canvas element to script.
+      const canvas = document.getElementById('render-canvas');
+
+      // Initialize Babylon.js variables.
+      let engine,
+          scene,
+          sceneToRender;
+      const createDefaultEngine = function () {
+        return new BABYLON.Engine(canvas, true, {
+          preserveDrawingBuffer: true,
+          stencil: true
+        });
+      };
+
+      // Create scene and create XR experience.
+      const createScene = async function () {
+
+        // Create a basic Babylon Scene object.
+        let scene = new BABYLON.Scene(engine);
+
+        // Create and position a free camera.
+        let camera = new BABYLON.FreeCamera('camera-1', new BABYLON.Vector3(0, 5, -10), scene);
+
+        // Point the camera at scene origin.
+        camera.setTarget(BABYLON.Vector3.Zero());
+
+        // Attach camera to canvas.
+        camera.attachControl(canvas, true);
+
+        // Create a light and aim it vertically to the sky (0, 1, 0).
+        let light = new BABYLON.HemisphericLight('light-1', new BABYLON.Vector3(0, 1, 0), scene);
+
+        // Set light intensity to a lower value (default is 1).
+        light.intensity = 0.5;
+
+        // Add one of Babylon's built-in cylinder shapes.
+        let sphere = BABYLON.MeshBuilder.CreateSphere('sphere-1', {
+          diameter: 2,
+          segments: 32
+        }, scene);
+
+        // Position the cylinder up by half of its height.
+        sphere.position.y = 1;
+
+        // Create a default environment for the scene.
+        scene.createDefaultEnvironment();
+
+        // Initialize XR experience with default experience helper.
+        const xrHelper = await scene.createDefaultXRExperienceAsync();
+        if (!xrHelper.baseExperience) {
+          // XR support is unavailable.
+          console.log('WebXR support is unavailable');
+        } else {
+          // XR support is available; proceed.
+          return scene;
+        }
+
+      };
+
+      // Create engine.
+      engine = createDefaultEngine();
+      if (!engine) {
+        throw 'Engine should not be null';
+      }
+
+      // Create scene.
+      scene = createScene();
+      scene.then(function (returnedScene) {
+        sceneToRender = returnedScene;
+      });
+
+      // Run render loop to render future frames.
+      engine.runRenderLoop(function () {
+        if (sceneToRender) {
+          sceneToRender.render();
+        }
+      });
+
+      // Handle browser resize.
+      window.addEventListener('resize', function () {
+        engine.resize();
+      });
+
+    </script>
+  </body>
+</html>

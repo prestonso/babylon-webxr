@@ -71,6 +71,10 @@
         // Set light intensity to a lower value (default is 1).
         light.intensity = 0.25;
 
+        // Set diffuse light to blue and specular light to red.
+        light.diffuse = new BABYLON.Color3(0, 0, 1);
+        light.specular = new BABYLON.Color3(1, 0, 0);
+
         // Add one of Babylon's built-in cylinder shapes.
         let sphere = BABYLON.MeshBuilder.CreateSphere('sphere-1', {
           diameter: 2,

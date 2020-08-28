@@ -65,8 +65,8 @@
         // Attach camera to canvas.
         camera.attachControl(canvas, true);
 
-        // Create a light and aim it vertically to the sky (0, 1, 0).
-        let light = new BABYLON.HemisphericLight('light-1', new BABYLON.Vector3(0, 1, 0), scene);
+        // Create a point light.
+        let light = new BABYLON.PointLight('light-1', new BABYLON.Vector3(0.5, 5, 0.5), scene);
 
         // Set light intensity to a lower value (default is 1).
         light.intensity = 0.5;
